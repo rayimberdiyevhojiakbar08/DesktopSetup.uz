@@ -1,0 +1,107 @@
+<%- include('../partial/navbar') %>
+ 
+   <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="/">Uy</a>
+                    <a class="breadcrumb-item text-dark" href="/checkout">Rasmilashtirish</a>
+                    <span class="breadcrumb-item active">Savat</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+    <% if (cart.length === 0) { %>
+        <div class="container m-5">Savatda hech narsa yo'q</div>
+    <% } else { %>
+        <h1 style="margin-left: 15%;"> Savatdgi Mahsulotlar Soni: <%= cart.length %></h1>
+    <% } %>
+    <!-- Cart Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-lg-8 table-responsive mb-5 cart-items">
+                <table class="table table-light table-borderless table-hover text-center mb-0">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Mahsulotlar</th>
+                            <th>Narx</th>
+                            <th>miqdor</th>
+                            <th>Umumiy</th>
+                            <th>O'chirish</th>
+                        </tr>
+                    </thead>
+                    <tbody class="align-middle">
+                        <% cart.reverse().forEach(item => { %>
+                            <tr class="cart-item"> 
+                                <td class="align-middle"><img src="/image/<%= item.data.img %>" alt="..." style="width: 50px;"><a href="/show/<%= item.data._id %>" class="ml-2"><%= item.data.title %></a> </td>
+                                <td class="align-middle price buy_cost">$<%= item.data.buy_cost  %></td>
+                                <td class="align-middle quantity"><%= item.quantity %></td>
+                                    <% summaCost += item.data.buy_cost * item.quantity %> 
+                                    <td class="align-middle item-total total" id="total">$<%= item.data.buy_cost * item.quantity %></td>
+                                <td class="align-middle"><button class="btn btn-sm btn-danger remove-btn" data-id="<%= item._id %>"><i class="fa fa-times"></i></button></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="col-lg-4">
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Cart Summary</span></h5>
+                <div class="bg-light p-30 mb-5">
+                    <div class="border-bottom pb-2">
+                        <div class="d-flex justify-content-between mb-3">
+                            <h6>Umumiy:</h6>
+                            <h6 id="stotal" class="stotal" ><%= summaCost %>.000 uzs</h6>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <h6>Bepul yetkazib berish uchun 4.000.000 lik harid qiling !</h6>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <h6 class="font-weight-medium">Yetkazib berish:</h6>
+                            <h6>20.000dan 190.000gacha uzs</h6><h6 class="text-muted"><del>200.000uzs</del></h6>
+                        </div>
+                    </div>
+                    <div class="pt-2">
+                        <div class="d-flex justify-content-between mt-2">
+                            <h5>Barchasi:</h5>
+                            <h5 id="total_cart"><%= summaCost%>.000 uzs</h5>
+                        </div>
+                        <a href="/checkout" class="btn btn-block btn-primary font-weight-bold my-3 py-3">Rasmilashtirish</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Cart End -->
+    <%- include('../partial/footer') %>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+<script>
+let btn = document.querySelectorAll("button[data-id]");
+ // Attach click event listener to the remove button
+$(".remove-btn").click(function() {
+  // Get the ID of the product to be removed
+  var productId = $(this).parent().data("id");
+
+  // Send an AJAX request to remove the product from the cart
+  $.ajax({
+    url: "/cart/remove",
+    type: "POST",
+    data: {
+     id: productId,
+    },
+    success: function(response) {
+      // Update the cart page with the updated cart data
+      window.location.reload();
+    },
+    error: function(xhr, status, error) {
+      // Handle errors
+    }
+    
+  });
+});
+</script>

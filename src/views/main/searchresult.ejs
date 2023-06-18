@@ -1,0 +1,58 @@
+<%- include('../partial/navbar') %>
+
+
+<!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="/">Uy</a>
+                    <a class="breadcrumb-item text-dark" href="/cart">Savat</a>
+                    <span class="breadcrumb-item active">Qidiruv</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+
+    <!-- Shop Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <!-- Shop Sidebar Start -->
+            <!-- Shop Sidebar End -->
+            <% if(data === 0) { %>
+                <h1 class="text-center">Hech Narsa Topilmadi</h1>
+            <% }else { %>
+                <div class="col-lg-9 col-md-8">
+                    <div class="row pb-3">
+                        <% data.forEach(item => { %>
+                        <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
+                            <div class="product-item bg-light mb-4">
+                                <div class="product-img position-relative overflow-hidden">   
+                                    <a href="/show/<%= item.id %>"><img class="img-fluid w-100" src="/image/<%= item.img %>" alt="*_*"></a>
+                                </div>
+                                <div class="text-center py-4">
+                                    <a class="h6 text-decoration-none text-truncate" href="/show/<%= item.id %>"><%= item.title %></a>
+                                    <div class="d-flex align-items-center justify-content-center mt-2">
+                                        <h5>$<%= item.buy_cost %></h5><h6 class="text-muted ml-2"><del>$<%= item.cost %></del></h6>
+                                    </div>  
+                                    <div>
+                                        <button class="btn btn-outline-dark btn-square add-to-cart" style="margin-left: 80%;" data-id="<%= item._id %>"><i class="fa fa-shopping-cart"></i></button>
+                                    </div>                     
+                                </div>
+                            </div>
+                        </div>                        
+                        <% }) %>
+                    </div>
+                </div>
+            <% }  %>
+            <!-- Shop Product Start -->
+
+            <!-- Shop Product End -->
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>  
+    <script src="/js/P.H.S.js"></script>
+
+<%- include('../partial/footer') %>
